@@ -9,7 +9,7 @@ let nextLetter = 0
 
 console.log(CORRECT_WORD)
 
-const modal = document.getElementById('modal')
+const modal = document.getElementById('modal-bg')
 const modalText = document.getElementById('modal-text')
 const close = document.getElementsByClassName('close')[0]
 
