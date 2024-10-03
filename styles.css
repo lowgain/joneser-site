@@ -1,28 +1,156 @@
+:root {
+  --bg-color: #FEFEFE;
+  --bg-color-alt: #EEE;
+}
+
 html, * {
-  box-sizing: border-box;
   margin: 0;
+  box-sizing: border-box;
 }
 
-footer {
-  background: #ddd;
+body {
+  margin-top: 115px;
+}
+
+nav {
   position: absolute;
-  bottom: 0;
+  top: 0;
+  left: 0;
+  background-color: var(--bg-color-alt);
+  display: flex;
+  align-items: center;
   width: 100vw;
-  text-align: center;
-  box-shadow: 0 0 5px #000;
+  height: 100px;
 }
 
-footer ul {
-  list-style-type: none;
-  display: inline-flex;
+h1 {
+ text-align: center;
+}
+
+#game-board {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.letter-box {
+  border: 2px solid gray;
+  border-radius: 3px;
+  margin: 2px;
+  font-size: 2.5rem;
+  font-weight: 700;
+  height: 3rem;
+  width: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+}
+
+.filled-box {
+  border: 2px solid black;
+}
+
+.letter-row {
+  display: flex;
+}
+
+#keyboard-cont {
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#keyboard-cont div {
+  display: flex;
+}
+
+.second-row {
+  margin: 0.5rem 0;
+}
+
+.keyboard-button {
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.5rem;
+  margin: 0 2px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.correct { background-color: green; }
+
+.wrong-place { background-color: yellow; }
+
+.not-present { background-color: grey;}
+
+.modal {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  border: 1px solid #888;
+  min-width: 400px;
+}
+
+.modal-header {
+  height: 3rem;
+  background-color: #CCC;
+  line-height: 3rem;
+}
+
+.modal-body {
   padding: 15px;
-  gap: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  font-size: 2rem;
 }
 
-footer ul li {
-  background: #bbb;
-  border-radius: 8px;
-  border: 1px solid #000;
-  padding: 8px;
-  box-shadow: 1px 1px 5px #999, 1px 1px 5px #FFF inset;
+.close {
+  width: 4rem;
+  text-align: center;
+  background-color: lightcoral;
+  color: #666;
+  float: right;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #444;
+  background-color: red;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.try-again {
+  font-size: 1.5rem;
+  padding: 15px;
+  background-color: #CCC;
+  border-radius: 6px;
+  border: 1px solid #444;
+  box-shadow: 5px 5px 5px #4444;
+}
+
+.try-again:hover,
+.try-again:focus {
+  background-color: #999;
+  box-shadow: 5px 5px 5px #4444 inset;
 }
