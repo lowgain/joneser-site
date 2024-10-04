@@ -139,7 +139,7 @@ document.getElementById('keyboard-cont').addEventListener('click', (e) => {
   if (!e.target.classList.contains('keyboard-button')) {
     return
   }
-  const key = e.target.textContent == 'Del' ? 'Backspace' : e.target.textContent
+  const key = e.target.textContent == 'Back' ? 'Backspace' : e.target.textContent
   document.dispatchEvent(new KeyboardEvent('keyup', { key: key }))
 })
 
