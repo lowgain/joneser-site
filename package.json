@@ -1,7 +1,7 @@
 {
   "name": "joneser-site",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -18,8 +18,5 @@
     "globals": "^15.10.0",
     "jsdoc": "^4.0.3",
     "live-server": "^1.2.2"
-  },
-  "dependencies": {
-    "fs": "^0.0.1-security"
   }
 }
