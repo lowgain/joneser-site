@@ -11,52 +11,50 @@ body {
   font-style: normal;
 }
 
-header {
+nav {
   position: fixed;
-  width: 100vw;
-  top: 0;
+  width: 100%;
+  top: 0; left: 0;
+  height: 120px;
+  z-index: -1;
+}
+
+nav a {
   background-color: var(--md-sys-color-primary);
-  overflow: hidden;
-  box-shadow: 0px 0px 15px black;
-  padding: 10px;
-}
-
-header h1 {
   color: var(--md-sys-color-on-primary);
-  font-size: 3rem;
-  margin: 10px;
-}
-
-header a {
   display: block;
-  margin: 5px auto;
-  width: 96%;
+  height: 40px;
+  line-height: 40px;
   text-align: center;
-  padding: 5px;
-  border-radius: 5px;
   text-decoration: none;
+}
+
+nav a.active-page {
+  background-color: var(--md-sys-color-tertiary);
+  color: var(--md-sys-color-on-tertiary);
+}
+
+nav a:hover,
+nav a:focus {
   background-color: var(--md-sys-color-primary-container);
-  color: var(--md-sys-color-on-primary-container)
-}
-
-header a.active-page {
-  background-color: var(--md-sys-color-secondary-container);
-  color: var(--md-sys-color-on-secondary-container);
-}
-
-header a:hover,
-header a:focus {
-  background-color: var(--md-sys-color-secondary);
-  box-shadow: 2px 2px 5px inset;
+  color: var(--md-sys-color-on-primary-container);
 }
 
 .body-container {
   background-color: var(--md-sys-color-background);
   color: var(--md-sys-color-on-background);
-  margin-top: 100px;
   min-height: 100vh;
-  box-shadow: 0px 0px 5px 5px rgba(0,0,0,0.3);
-  padding-top: 155px;
+  margin-top: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  box-shadow: 0 0 5px;
+}
+
+h1 {
+  font-size: 4rem;
 }
 
 #game-board {
@@ -83,25 +81,24 @@ header a:focus {
 }
 
 #keyboard-cont {
-  margin: 1rem 0;
+  margin: 2rem 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 3px;
 }
 
 #keyboard-cont div {
   display: flex;
-}
-
-.second-row {
-  margin: 0.5rem 0;
+  gap: 3px;
 }
 
 .keyboard-button {
+  font-family: "Roboto Mono", monospace;
   background-color: var(--md-sys-color-outline-variant);
-  font-size: 1rem;
-  padding: 0.5rem;
-  margin: 0 2px;
+  width: 35px; height: 40px;
+  font-size: 1.5rem;
+  text-align: center;
   cursor: pointer;
   text-transform: uppercase;
   border: 1px solid var(--md-sys-color-tertiary);
@@ -109,6 +106,14 @@ header a:focus {
 
 .keyboard-button:hover {
   background-color: var(--md-sys-color-outline);
+}
+
+#backspace-key {
+  width: auto;
+}
+
+#enter-key {
+  width: auto;
 }
 
 .correct { background-color: var(--md-sys-color-primary-container); }
@@ -134,7 +139,7 @@ header a:focus {
 
 .modal {
   background-color: var(--md-sys-color-background);
-  width: 400px;
+  width: 40vw;
   border-radius: 10px;
 }
 
@@ -185,44 +190,35 @@ header a:focus {
   box-shadow: 5px 5px 5px #4444 inset;
 }
 
-@media only screen and (min-width: 800px) {
+@media only screen and (min-width: 768px) {
 
-  header a {
-    display: inline;
-    margin: 5px;
-    font-size: 1.5rem;
+  nav {
+    background-color: var(--md-sys-color-primary);
+    height: 60px;
+    box-shadow: 0 0 10px;
+    z-index: 1;
+    display: flex;
   }
 
-  header h1 {
-    margin-top: 40px;
+  nav a {
+    height: 60px;
+    line-height: 60px;
+    font-size: 1.5rem;
+    padding: 0 10px;
+    margin: 0;
   }
 
   .body-container {
+    padding-top: 60px; 
+    box-shadow: 0px 0px 5px 5px rgba(0,0,0,0.3);
     width: 80vw;
     margin: auto;
-  }
-
-  .letter-box {
-    height: 4rem;
-    width: 4rem;
-    font-size: 3.5rem;
-    border: 3px solid var(--md-sys-color-tertiary);
-  }
-
-  .keyboard-button {
-    font-size: 1.5rem;
+    z-index: 0;
   }
 }
 
 @media only screen and (min-width: 1200px) {
-  .letter-box {
-    height: 5rem;
-    width: 5rem;
-    font-size: 4.3rem;
-    border: 4px solid var(--md-sys-color-tertiary);
-  }
-
-  .keyboard-button {
-    font-size: 2rem;
+  .body-container {
+    width: 70vw;
   }
 }

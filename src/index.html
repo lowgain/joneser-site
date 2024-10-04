@@ -12,15 +12,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
   </head>
   <body>
-    <header>
-      <div class="header-top">
-        <a href="https://joneserconvention.com/">Home</a>
-        <a class="active-page" href="https://wordal.joneserconvention.com/wordal/">Wordal</a>
-        <a href="https://calc.joneserconvention.com/">Calculator</a>
-      </div>
-      <h1 class="page-title">Wordal</h1>
-    </header>
+    <nav>
+      <a href="https://joneserconvention.com/">Home</a>
+      <a class="active-page" href="https://wordal.joneserconvention.com/">Wordal</a>
+      <a href="https://calc.joneserconvention.com/">Calculator</a>
+    </nav>
     <div class="body-container">
+      <h1 class="page-title">Wordal</h1>
       <main>
         <div id="game-board">
         </div>
@@ -49,7 +47,7 @@
             <button class="keyboard-button">l</button>
           </div>
           <div class="third-row">
-            <button class="keyboard-button">Del</button>
+            <button id="backspace-key" class="keyboard-button">Back</button>
             <button class="keyboard-button">z</button>
             <button class="keyboard-button">x</button>
             <button class="keyboard-button">c</button>
@@ -57,7 +55,7 @@
             <button class="keyboard-button">b</button>
             <button class="keyboard-button">n</button>
             <button class="keyboard-button">m</button>
-            <button class="keyboard-button">Enter</button>
+            <button id="enter-key" class="keyboard-button">Enter</button>
           </div>
         </div>
       </main>
