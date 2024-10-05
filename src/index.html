@@ -11,18 +11,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
   </head>
-  <body>
+  <body id="body">
     <nav>
       <a href="https://joneserconvention.com/">Home</a>
       <a class="active-page" href="https://wordal.joneserconvention.com/">Wordal</a>
       <a href="https://calc.joneserconvention.com/">Calculator</a>
     </nav>
-    <div class="body-container">
+    <div id="body-container" class="body-container">
       <h1 class="page-title">Wordal</h1>
       <main>
-        <input style="display: none;" onblur="this.focus()" autofocus />
-        <div id="game-board">
-        </div>
+        <div id="game-board"></div>
         <div id="keyboard-cont">
           <div class="first-row">
             <button class="keyboard-button">q</button>
@@ -59,19 +57,8 @@
             <button id="enter-key" class="keyboard-button">Enter</button>
           </div>
         </div>
+        <input style="display: none;" onblur="this.focus()" autofocus />
       </main>
-      <footer>
-      </footer>
-    </div>
-    <div id="modal-bg" class="modal-bg">
-      <div class="modal">
-        <div class="modal-header">
-          <button class="close">&times;</button>
-        </div>
-        <div class="modal-body">
-          <p id="modal-text"></p>
-        </div>
-      </div>
     </div>
     <script src="scripts.js" type="module"></script>
   </body>

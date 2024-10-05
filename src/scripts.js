@@ -1,41 +1,86 @@
-import { WORDS } from './words.js'
-
-const CORRECT_WORD = WORDS[Math.floor(Math.random() * WORDS.length)]
 const GUESSES = 6
+const DIFFICULTY = 5
 
-let guess = []
-let guessesLeft = GUESSES
-let nextLetter = 0
+const main = async () => {
+  const WORD = await fetch(`https://random-word-api.herokuapp.com/word?length=${DIFFICULTY}`)
+    .then((res) => res.json())
+    .then((json) => json[0])
+  console.log(WORD)
 
-console.log(CORRECT_WORD)
+  init()
 
-const modal = document.getElementById('modal-bg')
-const modalText = document.getElementById('modal-text')
-const close = document.getElementsByClassName('close')[0]
+  createModal('example-text', true)
+}
+main()
 
-for (let i = 0; i < GUESSES; i++) {
-  let row = document.createElement('div')
-  row.classList.add('letter-row')
-  for (let j = 0; j < CORRECT_WORD.length; j++) {
-    let box = document.createElement('div')
-    box.classList.add('letter-box')
-    row.appendChild(box)
+const init = () => {
+  const board = document.getElementById('game-board')
+  for (let i = 0; i < GUESSES; i++) {
+    for (let j = 0; j < DIFFICULTY; j++) {
+      const box = document.createElement('div')
+      box.classList.add('letter-box', `row-${i}`, `column-${j}`)
+      board.appendChild(box)
+    }
   }
-  document.getElementById('game-board').appendChild(row)
+}
+
+const createModal = (text, retry = false) => {
+  const page = document.getElementById('body')
+  const modalBG = document.createElement('div')
+  const modal = document.createElement('div')
+  const modalHeader = document.createElement('div')
+  const modalBody = document.createElement('div')
+  const modalText = document.createElement('p')
+  const modalClose = document.createElement('button')
+  modalBG.classList.add('modal-bg')
+  modal.classList.add('modal')
+  modalHeader.classList.add('modal-header')
+  modalClose.classList.add('modal-close')
+  modalBody.classList.add('modal-body')
+  modalText.classList.add('modal-text')
+  page.appendChild(modalBG)
+  modalBG.appendChild(modal)
+  modal.appendChild(modalHeader)
+  modalHeader.appendChild(modalClose)
+  modal.appendChild(modalBody)
+  modalBody.appendChild(modalText)
+  modalClose.textContent = `X`
+  modalText.textContent = text
+  if (retry) {
+    const button = document.createElement('button')
+    button.classList.add('try-again')
+    button.textContent = 'Try Again?'
+    button.onclick = () => {
+      location.reload()
+    }
+    modalBody.appendChild(button)
+  }
+  modalClose.onclick = () => {
+    modalBG.remove()
+  }
+  window.onclick = (event) => {
+    if (event.target == modalBG) {
+      modalBG.remove()
+    }
+  }
 }
 
 /**
  *
  * @param {Array.string} guess Array The current guess
  */
+/*
 function checkGuess(guess) {
-  const rightGuess = Array.from(CORRECT_WORD)
-  const row = document.getElementsByClassName('letter-row')[GUESSES - guessesLeft]
+  const rightGuess = Array.from(WORD)
+  const row = Object.values(board.children).slice(
+    rowNum * DIFFICULTY,
+    rowNum * DIFFICULTY + DIFFICULTY,
+  )
   let guessString = guess.toString().replaceAll(',', '')
-  if (guessString.length != CORRECT_WORD.length) {
+  if (guessString.length != DIFFICULTY) {
     modalText.textContent = 'Not enough letters!'
     modal.style.display = 'flex'
-    Object.values(row.children).forEach((box) => {
+    Object.values(row).forEach((box) => {
       box.textContent = ''
       box.classList.remove('filled-box')
       nextLetter -= 1
@@ -45,7 +90,7 @@ function checkGuess(guess) {
   } else if (!WORDS.includes(guessString)) {
     modalText.textContent = 'This is not a valid word!'
     modal.style.display = 'flex'
-    Object.values(row.children).forEach((box) => {
+    Object.values(row).forEach((box) => {
       box.textContent = ''
       box.classList.remove('filled-box')
       nextLetter -= 1
@@ -54,9 +99,9 @@ function checkGuess(guess) {
     return
   }
 
-  for (let i = 0; i < CORRECT_WORD.length; i++) {
+  for (let i = 0; i < DIFFICULTY; i++) {
     let status = ''
-    let box = row.children[i]
+    let box = row[i]
     let letter = guess[i]
 
     let letterPosition = rightGuess.indexOf(guess[i])
@@ -84,7 +129,7 @@ function checkGuess(guess) {
     }, delay)
   }
 
-  if (guessString === CORRECT_WORD) {
+  if (guessString === WORD) {
     modalText.textContent = 'You guessed right! Game over!'
     tryAgainBtn()
     modal.style.display = 'flex'
@@ -94,21 +139,27 @@ function checkGuess(guess) {
     guessesLeft--
     guess = []
     if (guessesLeft === 0) {
-      modalText.textContent = `You've run out of guesses!\nThe right word was "${CORRECT_WORD}`
+      modalText.textContent = `You've run out of guesses!\nThe right word was "${WORD}`
       modal.style.display = 'flex'
       tryAgainBtn()
     }
   }
 }
 
+let rowNum = 0
 document.addEventListener('keyup', (e) => {
-  const row = document.getElementsByClassName('letter-row')[GUESSES - guessesLeft]
+  const row = Object.values(board.children).slice(
+    rowNum * DIFFICULTY,
+    rowNum * DIFFICULTY + DIFFICULTY,
+  )
   const pressedKey = String(e.key).toLowerCase()
   if (guessesLeft === 0) {
     return
   }
-  if (pressedKey === 'backspace' && nextLetter !== 0) {
-    let box = row.children[nextLetter - 1]
+  if (pressedKey === 'backspace' && nextLetter == lastRow) {
+    console.log(nextLetter)
+    console.log(lastRow)
+    let box = row[nextLetter - 1]
     box.textContent = ''
     box.classList.remove('filled-box')
     guess.pop()
@@ -119,17 +170,17 @@ document.addEventListener('keyup', (e) => {
   if (pressedKey === 'enter') {
     checkGuess(guess)
     guess = []
-    nextLetter = 0
+    lastRow += DIFFICULTY
     return
   }
 
   const found = pressedKey.match(/[a-z]/gi)
   if (found && found.length == 1) {
-    if (nextLetter == CORRECT_WORD.length) {
+    if (nextLetter == DIFFICULTY) {
       return
     }
-    row.children[nextLetter].textContent = pressedKey
-    row.children[nextLetter].classList.add('filled-box')
+    row[nextLetter].textContent = pressedKey
+    row[nextLetter].classList.add('filled-box')
     guess.push(pressedKey)
     nextLetter++
   }
@@ -142,22 +193,4 @@ document.getElementById('keyboard-cont').addEventListener('click', (e) => {
   const key = e.target.textContent == 'Back' ? 'Backspace' : e.target.textContent
   document.dispatchEvent(new KeyboardEvent('keyup', { key: key }))
 })
-
-close.onclick = () => {
-  modal.style.display = 'none'
-}
-
-/**
- *
- */
-function tryAgainBtn() {
-  const modalBody = document.getElementsByClassName('modal-body')
-  const button = document.createElement('button')
-  button.classList.add('try-again')
-  button.textContent = 'Try Again?'
-  button.onclick = () => {
-    location.reload()
-  }
-  modalBody[0].appendChild(button)
-  return
-}
+*/

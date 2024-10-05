@@ -58,9 +58,11 @@ h1 {
 }
 
 #game-board {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: auto auto auto auto auto;
+  grid-template-rows: auto auto auto auto auto auto auto;
+  grid-auto-flow: row;
 }
 
 .letter-box {
@@ -74,10 +76,6 @@ h1 {
   align-items: center;
   justify-content: center;
   text-transform: uppercase;
-}
-
-.letter-row {
-  display: flex;
 }
 
 #keyboard-cont {
@@ -125,7 +123,7 @@ h1 {
 .wrong-place { background-color: var(--md-sys-color-tertiary);}
 
 .modal-bg {
-  display: none;
+  display: flex;
   justify-content: center;
   align-items: center;
   position: fixed;
@@ -141,13 +139,12 @@ h1 {
 
 .modal {
   background-color: var(--md-sys-color-background);
-  width: 40vw;
+  width: 60vw;
   border-radius: 10px;
 }
 
 .modal-header {
   width: 100%;
-  text-align: right;
   background-color: var(--md-sys-color-outline-variant);
   height: 40px;
   border-radius: 10px 10px 0 0;
@@ -159,19 +156,19 @@ h1 {
   padding: 15px;
 }
 
-.close {
+.modal-close {
   background-color: var(--md-sys-color-error);
   color: var(--md-sys-color-on-error);
-  text-align: center;
+  float: right;
   border: none;
   height: 40px;
   width: 40px;
-  font-size: 2rem;
+  font-size: 20px;
   border-radius: 0 10px 0 0;
 }
 
-.close:hover,
-.close:focus {
+.modal-close:hover,
+.modal-close:focus {
   background-color: #811;
 }
 
