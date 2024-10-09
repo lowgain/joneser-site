@@ -66,7 +66,6 @@ const addLetter = (letterBox, letter) => {
 const checkGuess = async (word, guess, difficulty) => {
   if (guess == word) {
     modal('Congrats!!\nYou Win!!', true)
-    return Array.from({ length: difficulty }, () => 'correct')
   }
   if (guess.length < difficulty) {
     modal('Not enough letters!')
@@ -77,15 +76,19 @@ const checkGuess = async (word, guess, difficulty) => {
     modal('Not a valid word!')
     return false
   }
-  return guess.split('').map((letter, index) => {
-    if (letter == word[index]) {
-      return 'correct'
+  guess = guess.split('').map((letter, index) => {
+    return letter == word[index] ? 'correct' : letter
+  })
+  guess = guess.map((letter) => {
+    if (letter == 'correct') {
+      return letter
     }
     if (word.includes(letter)) {
       return 'wrong-place'
     }
     return 'not-present'
   })
+  return guess
 }
 
 const colorize = (boxArray, key) => {
