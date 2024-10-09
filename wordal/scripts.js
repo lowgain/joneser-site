@@ -6,14 +6,39 @@ const dictionaryApiUrl = 'https://api.dictionaryapi.dev/api/v2/entries/en/'
 const main = async () => {
   const difficulty = DIFFICULTY
   const guesses = difficulty + 1
-  const word = await fetch(`https://random-word-api.herokuapp.com/word?length=${difficulty}`)
+  const word = await fetch(randomWordApiUrl + `?length=${difficulty}`)
     .then((res) => res.json())
     .then((json) => json[0])
   console.log(word)
 
+  let guess = ''
+  let rowNum = 0
+  let columnNum = 0
+  document.addEventListener('keydown', (event) => {
+    const row = document.getElementsByClassName(`row-${rowNum}`)
+    if (event.code == 'Backspace') {
+      removeLetter(row[columnNum])
+      guess = guess.slice(0, -1)
+      columnNum--
+    }
+    if (event.code.slice(0, 2) == 'Key') {
+      addLetter(row[columnNum], event.key)
+      columnNum++
+    }
+    if (event.code == 'Enter') {
+      const checkedGuess = checkGuess(word, guess)
+      colorize(checkedGuess, row)
+      guess = ''
+      rowNum++
+    }
+  })
+
+  document.getElementById('keyboard').onclick = (event) => {
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: event.target.textContent }))
+  }
+
   init(difficulty, guesses)
 }
-main()
 
 const init = (difficulty, guesses) => {
   const board = document.getElementById('game-board')
@@ -55,7 +80,6 @@ const modal = (text, retry = false) => {
 const removeLetter = (letterBox) => {
   letterBox.textContent = ''
   letterBox.classList.remove('filled-box')
-  return
 }
 
 const addLetter = (letterBox, letter) => {
