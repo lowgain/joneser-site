@@ -1,22 +1,21 @@
-const GUESSES = 6
 const DIFFICULTY = 5
 
 const main = async () => {
-  const WORD = await fetch(`https://random-word-api.herokuapp.com/word?length=${DIFFICULTY}`)
+  const difficulty = DIFFICULTY
+  const guesses = difficulty + 1
+  const word = await fetch(`https://random-word-api.herokuapp.com/word?length=${difficulty}`)
     .then((res) => res.json())
     .then((json) => json[0])
-  console.log(WORD)
+  console.log(word)
 
-  init()
-
-  createModal('example-text', true)
+  init(difficulty, guesses)
 }
 main()
 
-const init = () => {
+const init = (difficulty, guesses) => {
   const board = document.getElementById('game-board')
-  for (let i = 0; i < GUESSES; i++) {
-    for (let j = 0; j < DIFFICULTY; j++) {
+  for (let i = 0; i < guesses; i++) {
+    for (let j = 0; j < difficulty; j++) {
       const box = document.createElement('div')
       box.classList.add('letter-box', `row-${i}`, `column-${j}`)
       board.appendChild(box)

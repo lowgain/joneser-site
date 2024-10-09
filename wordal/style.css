@@ -1,0 +1,112 @@
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html::-webkit-scrollbar { display: none; }
+
+main {
+  display: grid;
+  grid-template-rows: 2fr 1fr;
+  align-items: center;
+  padding: 0;
+}
+
+#game-board {
+  height: 117vw;
+  padding: 20px;
+  display: grid;
+  grid-template: 1fr 1fr 1fr 1fr 1fr 1fr / 1fr 1fr 1fr 1fr 1fr;
+  gap: 4px;
+}
+
+.letter-box {
+  border: 2px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  font-size: 35px;
+  text-transform: uppercase;
+}
+
+#keyboard {
+  height: 60vw; width: 100vw;
+  align-self: self-end;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  gap: 3px;
+}
+
+#keyboard div {
+  height: 30%; width: 100%;
+  display: grid;
+  gap: 4px;
+}
+
+#keyboard div.top-row {
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+#keyboard div.home-row {
+  grid-template-columns: .5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr .5fr;
+}
+
+#keyboard div.bottom-row {
+  grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1.5fr;
+}
+
+.keyboard-button {
+  background-color: var(--md-sys-color-outline-variant);
+  cursor: pointer;
+  text-transform: uppercase;
+  border: 1px solid var(--md-sys-color-tertiary);
+  font-size: 1rem;
+}
+
+.keyboard-button:hover {
+  background-color: var(--md-sys-color-outline);
+}
+
+#backspace-key {
+  width: auto;
+}
+
+#enter-key {
+  width: auto;
+}
+
+.correct { background-color: var(--md-sys-color-primary-container); }
+
+.not-present { background-color: var(--md-sys-color-outline); }
+
+.wrong-place { background-color: var(--md-sys-color-tertiary);}
+
+.try-again {
+  font-size: 1.5rem;
+  margin: 15px;
+  padding: 15px;
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-radius: 6px;
+  border: 1px solid #444;
+  box-shadow: 5px 5px 5px #4444;
+}
+
+.try-again:hover,
+.try-again:focus {
+  background-color: var(--md-sys-color-primary);
+  box-shadow: 5px 5px 5px #4444 inset;
+}
+
+
+@media only screen and (min-width: 768px) {
+  .keyboard-button {
+    width: 35px; height: 40px;
+    font-size: 30px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    text-transform: uppercase;
+    border: 1px solid var(--md-sys-color-tertiary);
+  }
+}
