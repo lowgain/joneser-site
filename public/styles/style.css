@@ -60,8 +60,8 @@ main {
   padding: 20px;
 }
 
-.modal-bg {
-  display: flex;
+#modal-bg {
+  display: none;
   justify-content: center;
   align-items: center;
   position: fixed;

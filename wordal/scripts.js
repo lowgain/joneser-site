@@ -12,29 +12,49 @@ const main = async () => {
   console.log(word)
 
   let guess = ''
-  let rowNum = 0
+  let guessesLeft = guesses
   let columnNum = 0
-  document.addEventListener('keydown', (event) => {
-    const row = document.getElementsByClassName(`row-${rowNum}`)
-    if (event.code == 'Backspace') {
+  document.addEventListener('keydown', async (event) => {
+    const row = Object.values(document.getElementsByClassName(`row-${guesses - guessesLeft}`))
+    if (guessesLeft <= 0) {
+      return
+    }
+    if (event.key == 'Backspace' && columnNum != 0) {
+      columnNum--
       removeLetter(row[columnNum])
       guess = guess.slice(0, -1)
-      columnNum--
+      return
     }
-    if (event.code.slice(0, 2) == 'Key') {
-      addLetter(row[columnNum], event.key)
-      columnNum++
-    }
-    if (event.code == 'Enter') {
-      const checkedGuess = checkGuess(word, guess)
-      colorize(checkedGuess, row)
+    if (event.key == 'Enter') {
+      if (guess == word) {
+        modal('You Win!!!', true)
+        colorize(row, guess, word)
+        guessesLeft = 0
+        return
+      } else {
+        if (await validateGuess(guess, difficulty)) {
+          guessesLeft--
+          colorize(row, guess, word)
+        } else {
+          row.forEach((letterBox) => removeLetter(letterBox))
+        }
+      }
+      if (guessesLeft == 0) { modal(`You Lose :(\nThe word was ${word}`, true) }
       guess = ''
-      rowNum++
+      columnNum = 0
+      return
+    }
+    if (event.key.search(/^[a-z]$/i) == 0) {
+      addLetter(row[columnNum], event.key)
+      guess += event.key
+      columnNum++
+      return
     }
   })
 
   document.getElementById('keyboard').onclick = (event) => {
-    document.dispatchEvent(new KeyboardEvent('keydown', { key: event.target.textContent }))
+    const key = event.target.textContent == 'Back' ? 'Backspace' : event.target.textContent
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: key }))
   }
 
   init(difficulty, guesses)
@@ -51,12 +71,53 @@ const init = (difficulty, guesses) => {
   }
 }
 
+const removeLetter = (letterBox) => {
+  letterBox.textContent = ''
+  letterBox.classList.remove('filled-box')
+}
+
+const addLetter = (letterBox, letter) => {
+  letterBox.classList.add('filled-box')
+  letterBox.textContent = letter
+}
+
+const validateGuess = async (guess, difficulty) => {
+  if (guess.length < difficulty) {
+    modal('Not enough letters!')
+    return false
+  }
+  const isValid = await fetch(dictionaryApiUrl + guess).then((res) => res.status)
+  if (isValid == 404) {
+    modal('Not a valid word!')
+    return false
+  }
+  return true
+}
+
+const colorize = (row, guess, word) => {
+  let key = [...word]
+  guess = guess.split('').map((letter, index) => {
+    return letter == word[index] ? key[index] = 'correct' : letter
+  })
+  guess = guess.map((letter) => {
+    if (letter == 'correct') {
+      return letter
+    } else {
+      return key.includes(letter) ? key[key.indexOf(letter)] = 'wrong-place' : 'not-present'
+    }
+  })
+  row.forEach((letterBox, index) => {
+    setTimeout(() => {
+      letterBox.classList.add(guess[index])
+    }, 250 * index)
+  })
+}
+
 const modal = (text, retry = false) => {
   const modalBG = document.getElementById('modal-bg')
   const modalBody = document.getElementsByClassName('modal-body')[0]
-  const modalText = document.getElementsByClassName('modal-text')[0]
   const modalClose = document.getElementsByClassName('modal-close')[0]
-  modalText.textContent = text
+  modalBody.textContent = text
   if (retry) {
     const button = document.createElement('button')
     button.classList.add('try-again')
@@ -75,52 +136,6 @@ const modal = (text, retry = false) => {
     }
   }
   modalBG.style = 'display:flex'
-}
-
-const removeLetter = (letterBox) => {
-  letterBox.textContent = ''
-  letterBox.classList.remove('filled-box')
-}
-
-const addLetter = (letterBox, letter) => {
-  letterBox.classList.add('filled-box')
-  letterBox.textContent = letter
-}
-
-const checkGuess = async (word, guess, difficulty) => {
-  if (guess == word) {
-    modal('Congrats!!\nYou Win!!', true)
-  }
-  if (guess.length < difficulty) {
-    modal('Not enough letters!')
-    return false
-  }
-  const isValid = await fetch(dictionaryApiUrl + guess).then((res) => res.status)
-  if (isValid == 404) {
-    modal('Not a valid word!')
-    return false
-  }
-  guess = guess.split('').map((letter, index) => {
-    return letter == word[index] ? 'correct' : letter
-  })
-  guess = guess.map((letter) => {
-    if (letter == 'correct') {
-      return letter
-    }
-    if (word.includes(letter)) {
-      return 'wrong-place'
-    }
-    return 'not-present'
-  })
-  return guess
-}
-
-const colorize = (boxArray, key) => {
-  boxArray.forEach((letterBox, index) => {
-    setTimeout(() => {
-      letterBox.classList.add(key[index])
-    }, 250 * index)
-  })
 }
 
 main()
