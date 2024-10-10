@@ -39,7 +39,7 @@ const main = async () => {
           row.forEach((letterBox) => removeLetter(letterBox))
         }
       }
-      if (guessesLeft == 0) { modal(`You Lose :(\nThe word was ${word}`, true) }
+      if (guessesLeft == 0) { modal(`You Lose :(<br>The word was ${word}`, true) }
       guess = ''
       columnNum = 0
       return
@@ -117,7 +117,7 @@ const modal = (text, retry = false) => {
   const modalBG = document.getElementById('modal-bg')
   const modalBody = document.getElementsByClassName('modal-body')[0]
   const modalClose = document.getElementsByClassName('modal-close')[0]
-  modalBody.textContent = text
+  modalBody.innerHTML = text
   if (retry) {
     const button = document.createElement('button')
     button.classList.add('try-again')
